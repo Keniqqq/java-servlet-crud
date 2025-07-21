@@ -11,9 +11,16 @@ public class PostRepository {
     private final Map<Long, Post> posts = new ConcurrentHashMap<>();
     private final AtomicLong lastId = new AtomicLong(0);
 
+    @Repository
+    public class PostRepository {
+        // ...
+    }
+
     @PostConstruct
     public void init() {
-        // можно добавить тестовые данные
+        final var repository = new PostRepository();
+        final var service = new PostService(repository);
+        controller = new PostController(service);// можно добавить тестовые данные
     }
 
     public Map<Long, Post> all() {

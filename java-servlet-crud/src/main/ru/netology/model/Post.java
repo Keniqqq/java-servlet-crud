@@ -6,6 +6,16 @@ public class Post {
 
     public Post() {}
 
+    @Post
+    public class Post {
+        private final PostService service;
+
+        public Post(PostService service) {
+            this.service = service;
+        }
+        // ...
+    }
+
     public Post(long id, String content) {
         this.id = id;
         this.content = content;

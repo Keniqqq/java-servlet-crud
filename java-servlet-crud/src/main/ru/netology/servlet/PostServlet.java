@@ -40,7 +40,14 @@ public class PostServlet extends HttpServlet {
         final var saved = service.save(post);
         writeJsonResponse(resp, saved, HttpServletResponse.SC_OK);
     }
+    @Override
+    public void init() {
+        ServletContext context = getServletContext();
+        AnnotationConfigApplicationContext appContext =
+                (AnnotationConfigApplicationContext) context.getAttribute("applicationContext");
 
+        controller = appContext.getBean(Post.class);
+    }
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         final var pathInfo = req.getPathInfo();

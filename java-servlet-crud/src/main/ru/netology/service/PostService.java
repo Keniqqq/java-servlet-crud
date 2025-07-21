@@ -9,6 +9,16 @@ import java.util.Map;
 public class PostService {
     private final PostRepository repository = new PostRepository();
 
+    @Service
+    public class PostService {
+        private final PostRepository repository;
+
+        public PostService(PostRepository repository) {
+            this.repository = repository;
+        }
+        // ...
+    }
+
     public List<Post> all() {
         return List.copyOf(repository.all().values());
     }
