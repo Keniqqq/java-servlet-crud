@@ -1,30 +1,20 @@
+// src/main/java/ru/netology/repository/PostRepository.java
 package ru.netology.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.netology.model.Post;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class PostRepository {
     private final Map<Long, Post> posts = new ConcurrentHashMap<>();
     private final AtomicLong lastId = new AtomicLong(0);
 
-    @Repository
-    public class PostRepository {
-        // ...
-    }
-
-    @PostConstruct
-    public void init() {
-        final var repository = new PostRepository();
-        final var service = new PostService(repository);
-        controller = new PostController(service);// можно добавить тестовые данные
-    }
-
     public Map<Long, Post> all() {
-        return Map.copyOf(posts); // immutable copy
+        return Map.copyOf(posts);
     }
 
     public Post getById(long id) {
@@ -33,26 +23,16 @@ public class PostRepository {
 
     public Post save(Post post) {
         if (post.getId() == 0) {
-            // Создание нового поста
             long newId = lastId.incrementAndGet();
             post.setId(newId);
             posts.put(newId, post);
-            return post;
         } else {
-            // Обновление существующего
-            if (posts.containsKey(post.getId())) {
-                posts.put(post.getId(), post);
-                return post;
-            } else {
-                throw new IllegalArgumentException("Post with id " + post.getId() + " not found");
-            }
+            posts.put(post.getId(), post);
         }
+        return post;
     }
 
     public void removeById(long id) {
-        if (!posts.containsKey(id)) {
-            throw new IllegalArgumentException("Post with id " + id + " not found");
-        }
         posts.remove(id);
     }
 }
