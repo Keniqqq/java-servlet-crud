@@ -1,7 +1,7 @@
 package ru.netology.repository;
 
 import org.springframework.stereotype.Repository;
-import ru.netology.dto.Post;
+import ru.netology.model.Post;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
